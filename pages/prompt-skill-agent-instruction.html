@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt vs Skill vs Agent vs Instruction — Pandora's AI Box</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Concept grid ── */
+
+    .concept-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    .concept-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .concept-card:hover { transform: translateY(-3px); }
+    .concept-card.instruction:hover { border-color: #6366f1; }
+    .concept-card.prompt:hover      { border-color: #a855f7; }
+    .concept-card.skill:hover       { border-color: #14b8a6; }
+    .concept-card.agent:hover       { border-color: #f97316; }
+
+    .concept-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      pointer-events: none;
+      border-radius: 14px;
+    }
+
+    .concept-card.instruction::before { background: #6366f1; }
+    .concept-card.prompt::before      { background: #a855f7; }
+    .concept-card.skill::before       { background: #14b8a6; }
+    .concept-card.agent::before       { background: #f97316; }
+
+    .concept-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .concept-card.instruction::after { background: #6366f1; }
+    .concept-card.prompt::after      { background: #a855f7; }
+    .concept-card.skill::after       { background: #14b8a6; }
+    .concept-card.agent::after       { background: #f97316; }
+
+    .concept-emoji {
+      font-size: 2.25rem;
+      margin-bottom: 0.75rem;
+      display: block;
+      line-height: 1;
+    }
+
+    .concept-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .concept-card.instruction .concept-name { color: #6366f1; }
+    .concept-card.prompt .concept-name      { color: #a855f7; }
+    .concept-card.skill .concept-name       { color: #14b8a6; }
+    .concept-card.agent .concept-name       { color: #f97316; }
+
+    .concept-alias {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .concept-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .concept-triggers {
+      background: #0f0f13;
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      border-left: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .concept-card.instruction .concept-triggers { border-color: #6366f1; }
+    .concept-card.prompt .concept-triggers      { border-color: #a855f7; }
+    .concept-card.skill .concept-triggers       { border-color: #14b8a6; }
+    .concept-card.agent .concept-triggers       { border-color: #f97316; }
+
+    .trigger-item {
+      font-size: 0.78rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.45;
+      padding-left: 0.75rem;
+      position: relative;
+    }
+
+    .trigger-item::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+      top: -2px;
+      font-style: normal;
+      font-size: 1rem;
+      opacity: 0.4;
+    }
+
+    /* ── Decision flowchart ── */
+
+    .flowchart {
+      margin: 1.5rem 0 2.5rem;
+      position: relative;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .flow-question {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .flow-qnum {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.15rem 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .flow-yes-branch {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .flow-hline {
+      width: 28px;
+      height: 1.5px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .flow-yes-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      writing-mode: horizontal-tb;
+    }
+
+    .flow-result {
+      border-radius: 8px;
+      padding: 0.5rem 0.9rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .flow-result.instruction { background: #1a1a3e; color: #6366f1; border: 1px solid #6366f1; }
+    .flow-result.prompt      { background: #1f1230; color: #a855f7; border: 1px solid #a855f7; }
+    .flow-result.skill       { background: #0a2420; color: #14b8a6; border: 1px solid #14b8a6; }
+    .flow-result.agent       { background: #2a1500; color: #f97316; border: 1px solid #f97316; }
+
+    .flow-connector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0 0.3rem 1.25rem;
+    }
+
+    .flow-vline {
+      width: 1.5px;
+      height: 24px;
+      background: var(--border);
+    }
+
+    .flow-no-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Reference table ── */
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .ref-table th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .ref-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .ref-table tr:last-child td { border-bottom: none; }
+
+    .ref-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .type-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .type-pill.instruction { background: #1a1a3e; color: #6366f1; }
+    .type-pill.prompt      { background: #1f1230; color: #a855f7; }
+    .type-pill.skill       { background: #0a2420; color: #14b8a6; }
+    .type-pill.agent       { background: #2a1500; color: #f97316; }
+
+    /* ── Responsive ── */
+
+    @media (max-width: 600px) {
+      .concept-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-step {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-yes-branch {
+        padding-left: 1.25rem;
+        margin-top: -0.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Pandora's <span>AI</span> Box</h1>
+  <nav>
+    <a href="../index.html#learned">Learned</a>
+    <a href="../index.html#to-learn">To Learn</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <a class="back" href="../index.html">← Back to home</a>
+    <h1>Prompt · Skill · Agent · Instruction</h1>
+    <p class="subtitle">When you face a problem — which path do you take?</p>
+    <div class="meta">
+      <span class="tag">Agents</span>
+      <span class="tag">Prompting</span>
+      <span class="tag status-learned">Learned</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <h2>The one-sentence version</h2>
+    <p>
+      There are four ways to work with AI — and the right one depends on how often the task repeats
+      and how much autonomy the AI needs to complete it.
+    </p>
+
+    <!-- ── The four paths ── -->
+
+    <h2>The four paths</h2>
+
+    <div class="concept-grid">
+
+      <div class="concept-card instruction">
+        <span class="concept-emoji">📋</span>
+        <div class="concept-name">Instruction</div>
+        <div class="concept-alias">CLAUDE.md · system prompt</div>
+        <p class="concept-desc">
+          Persistent context that applies silently in every session — without you thinking about it.
+          Rules, conventions, preferences that should always be true.
+        </p>
+        <div class="concept-triggers">
+          <div class="trigger-item">I keep having to remind the AI about the same thing…</div>
+          <div class="trigger-item">Every project has its own conventions and the AI keeps missing them.</div>
+          <div class="trigger-item">There's a fact about my setup or preferences that should never be forgotten.</div>
+        </div>
+      </div>
+
+      <div class="concept-card prompt">
+        <span class="concept-emoji">💬</span>
+        <div class="concept-name">Prompt</div>
+        <div class="concept-alias">one-off · you write it fresh</div>
+        <p class="concept-desc">
+          A specific request you write each time. You're fully in control.
+          The task varies, the context changes, and you only need it once.
+        </p>
+        <div class="concept-triggers">
+          <div class="trigger-item">I need to ask the AI something specific right now…</div>
+          <div class="trigger-item">This task is unique to today — I won't need it again.</div>
+          <div class="trigger-item">I'm exploring an idea and want full control over the wording.</div>
+        </div>
+      </div>
+
+      <div class="concept-card skill">
+        <span class="concept-emoji">⚡</span>
+        <div class="concept-name">Skill</div>
+        <div class="concept-alias">/slash command · repeatable shortcut</div>
+        <p class="concept-desc">
+          A prompt you've written once, triggered with a slash command. You still initiate it
+          manually — but the instructions are pre-written and consistent every time.
+        </p>
+        <div class="concept-triggers">
+          <div class="trigger-item">I keep typing the same prompt over and over…</div>
+          <div class="trigger-item">Every time I open a PR, I run the same checklist.</div>
+          <div class="trigger-item">I want this to be one keystroke instead of a paragraph.</div>
+        </div>
+      </div>
+
+      <div class="concept-card agent">
+        <span class="concept-emoji">🤖</span>
+        <div class="concept-name">Agent</div>
+        <div class="concept-alias">multi-step · tools · autonomous</div>
+        <p class="concept-desc">
+          You give it a goal. It figures out the how — searching, reading files,
+          writing code, making decisions across multiple steps without you guiding each one.
+        </p>
+        <div class="concept-triggers">
+          <div class="trigger-item">I need it to figure out HOW to do this, not just what to say…</div>
+          <div class="trigger-item">It should search the codebase, decide what to fix, then fix it.</div>
+          <div class="trigger-item">I want to hand off a goal and walk away.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Decision flowchart ── -->
+
+    <h2>Which path do I take?</h2>
+
+    <div class="flowchart">
+
+      <div class="flow-step">
+        <div class="flow-question">
+          <span class="flow-qnum">Q1</span>
+          Should this apply silently in the background, every time?
+        </div>
+        <div class="flow-yes-branch">
+          <div class="flow-hline"></div>
+          <div class="flow-yes-label">YES</div>
+          <div class="flow-result instruction">📋 Instruction</div>
+        </div>
+      </div>
+
+      <div class="flow-connector">
+        <div class="flow-vline"></div>
+        <div class="flow-no-label">NO ↓</div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-question">
+          <span class="flow-qnum">Q2</span>
+          Is it a one-off or variable request — different each time?
+        </div>
+        <div class="flow-yes-branch">
+          <div class="flow-hline"></div>
+          <div class="flow-yes-label">YES</div>
+          <div class="flow-result prompt">💬 Prompt</div>
+        </div>
+      </div>
+
+      <div class="flow-connector">
+        <div class="flow-vline"></div>
+        <div class="flow-no-label">NO ↓</div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-question">
+          <span class="flow-qnum">Q3</span>
+          Do you find yourself typing the same instructions repeatedly?
+        </div>
+        <div class="flow-yes-branch">
+          <div class="flow-hline"></div>
+          <div class="flow-yes-label">YES</div>
+          <div class="flow-result skill">⚡ Skill</div>
+        </div>
+      </div>
+
+      <div class="flow-connector">
+        <div class="flow-vline"></div>
+        <div class="flow-no-label">NO ↓</div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-question">
+          <span class="flow-qnum">Q4</span>
+          Does it need multiple steps, tools, and autonomous decisions?
+        </div>
+        <div class="flow-yes-branch">
+          <div class="flow-hline"></div>
+          <div class="flow-yes-label">YES</div>
+          <div class="flow-result agent">🤖 Agent</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout tip">
+      <strong>Key insight</strong>
+      These aren't mutually exclusive. A well-crafted <strong>Instruction</strong> (CLAUDE.md) sets the stage,
+      a <strong>Skill</strong> kicks off a task, and that task might spin up an <strong>Agent</strong> — all in the same session.
+      Think of them as layers, not alternatives.
+    </div>
+
+    <!-- ── Quick reference table ── -->
+
+    <h2>Quick reference</h2>
+
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>You trigger it?</th>
+          <th>Repeatable?</th>
+          <th>Uses tools?</th>
+          <th>Lives where?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="type-pill instruction">📋 Instruction</span></td>
+          <td>No — always-on</td>
+          <td>Yes, silently</td>
+          <td>No</td>
+          <td>CLAUDE.md / system prompt</td>
+        </tr>
+        <tr>
+          <td><span class="type-pill prompt">💬 Prompt</span></td>
+          <td>Yes, each time</td>
+          <td>No — varies</td>
+          <td>No</td>
+          <td>The chat window</td>
+        </tr>
+        <tr>
+          <td><span class="type-pill skill">⚡ Skill</span></td>
+          <td>Yes, via /command</td>
+          <td>Yes, consistently</td>
+          <td>Sometimes</td>
+          <td>.claude/skills/</td>
+        </tr>
+        <tr>
+          <td><span class="type-pill agent">🤖 Agent</span></td>
+          <td>Yes — then it runs</td>
+          <td>Yes</td>
+          <td>Yes — that's the point</td>
+          <td>SDK / Claude Code</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <strong>Watch out for</strong>
+      <ul class="watch-list">
+        <li><strong>Don't reach for an Agent when a Prompt would do.</strong> Agents are powerful but slower and harder to predict. Start simple — escalate only when the task genuinely needs autonomy and tools.</li>
+        <li><strong>Instructions are invisible.</strong> When the AI behaves unexpectedly, check CLAUDE.md or the system prompt first — it's probably quietly steering things in a way you forgot about.</li>
+        <li><strong>Long Instructions cost tokens on every message.</strong> Keep CLAUDE.md focused on what actually matters; don't dump every preference you've ever had.</li>
+        <li><strong>Skills can rot.</strong> If your workflow changes but the skill doesn't, you'll silently get stale results. Treat them like code — review and update them.</li>
+        <li><strong>Agents amplify mistakes.</strong> A vague goal becomes a confidently wrong multi-step workflow. Be specific about success criteria before you let one loose.</li>
+        <li><strong>Don't put fast-changing context into Instructions.</strong> They're for stable rules, not today's task state. Use Prompts for anything ephemeral.</li>
+      </ul>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Pandora's AI Box &mdash; personal notes, not public docs.
+</footer>
+
+</body>
+</html>
