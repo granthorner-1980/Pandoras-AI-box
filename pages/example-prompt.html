@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt · Example — Pandora's AI Box</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .type-tag-prompt {
+      background: #1f1230;
+      color: #a855f7;
+      border-color: #a855f7;
+    }
+    .example-emoji {
+      font-size: 2rem;
+      margin-right: 0.5rem;
+      vertical-align: -0.15em;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Pandora's <span>AI</span> Box</h1>
+  <nav>
+    <a href="../index.html#learned">Learned</a>
+    <a href="../index.html#to-learn">To Learn</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <a class="back" href="prompt-skill-agent-instruction.html">← Back to the four paths</a>
+    <h1><span class="example-emoji">💬</span>Prompt · Example</h1>
+    <p class="subtitle">What a well-structured one-off prompt looks like.</p>
+    <div class="meta">
+      <span class="tag type-tag-prompt">Prompt</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <h2>What it is</h2>
+    <p>
+      A specific request you write fresh each time and send into the chat.
+      You're fully in control of the wording, the scope, and the output format.
+      Use one when the task varies, you only need it once, or you want full editorial control.
+    </p>
+
+    <h2>Where it lives</h2>
+    <p>
+      In the chat window. Typed and sent — no file, no slash command.
+    </p>
+
+    <h2>Example</h2>
+    <p>A focused PR review prompt:</p>
+
+<pre><code>Review the changes in this PR for security issues only.
+
+Focus on:
+- Authentication and session handling
+- SQL injection or unsafe query construction
+- Secrets accidentally committed
+- Input validation gaps on API routes
+
+Skip:
+- Code style or formatting
+- Naming conventions
+- General refactoring suggestions
+
+Output format: a markdown list grouped by file. Each finding includes
+the file path, line number, severity (high / medium / low), and a
+one-sentence explanation.
+
+If you find nothing concerning, say so explicitly — don't invent issues.
+</code></pre>
+
+    <div class="callout tip">
+      <strong>What makes this good</strong>
+      <ul>
+        <li><strong>Single, narrow goal.</strong> "Security issues only" — not "review this PR" (which would dump style nits, naming opinions, and refactor ideas).</li>
+        <li><strong>Explicit "focus on" list.</strong> The AI knows exactly what to look for.</li>
+        <li><strong>Explicit "skip" list.</strong> Prevents scope creep into things you don't care about right now.</li>
+        <li><strong>Defined output format.</strong> Consistent structure makes the response scannable.</li>
+        <li><strong>Exit clause.</strong> "If nothing, say so" stops the AI from inventing problems to seem useful.</li>
+        <li><strong>No politeness padding.</strong> Direct and structured — the AI doesn't need pleasantries.</li>
+      </ul>
+    </div>
+
+    <div class="callout warning">
+      <strong>Watch out for</strong>
+      <ul class="watch-list">
+        <li><strong>Vague prompts give vague results.</strong> "Make this better" or "review this code" leaves the AI guessing what you actually care about.</li>
+        <li><strong>"Don't ___" is weaker than "do X instead".</strong> Negative instructions are easier for the model to drift from than positive ones.</li>
+        <li><strong>One prompt, one task.</strong> Multi-task prompts ("review for security AND suggest refactors AND improve naming") usually produce shallow results on all of them.</li>
+        <li><strong>Don't paste a wall of code without context.</strong> Tell the model what the code is for and what you're trying to achieve before pasting.</li>
+        <li><strong>Specify output format if you care about it.</strong> Otherwise you'll get prose when you wanted a list, or a list when you wanted a table.</li>
+      </ul>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Pandora's AI Box &mdash; personal notes, not public docs.
+</footer>
+
+</body>
+</html>

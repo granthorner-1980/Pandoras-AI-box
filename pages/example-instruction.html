@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instruction · Example — Pandora's AI Box</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .type-tag-instruction {
+      background: #1a1a3e;
+      color: #6366f1;
+      border-color: #6366f1;
+    }
+    .example-emoji {
+      font-size: 2rem;
+      margin-right: 0.5rem;
+      vertical-align: -0.15em;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Pandora's <span>AI</span> Box</h1>
+  <nav>
+    <a href="../index.html#learned">Learned</a>
+    <a href="../index.html#to-learn">To Learn</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <a class="back" href="prompt-skill-agent-instruction.html">← Back to the four paths</a>
+    <h1><span class="example-emoji">📋</span>Instruction · Example</h1>
+    <p class="subtitle">What a good CLAUDE.md or system prompt looks like in practice.</p>
+    <div class="meta">
+      <span class="tag type-tag-instruction">Instruction</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <h2>What it is</h2>
+    <p>
+      Persistent context that applies silently to every AI session — a project's
+      <code>CLAUDE.md</code>, or the system prompt sent on every Anthropic API call.
+      You don't trigger it; it's just always there, shaping behaviour in the background.
+    </p>
+
+    <h2>Where it lives</h2>
+    <ul>
+      <li>Project-wide: <code>CLAUDE.md</code> at the repo root</li>
+      <li>Global (all projects): <code>~/.claude/CLAUDE.md</code></li>
+      <li>API: passed as <code>system</code> on each request</li>
+    </ul>
+
+    <h2>Example</h2>
+    <p>A condensed, well-structured project CLAUDE.md:</p>
+
+<pre><code># Acme Web App
+
+A Next.js storefront for Acme. Customer-facing checkout, search, and account pages.
+
+## Stack
+
+- Next.js 14 (App Router) with TypeScript strict mode
+- Tailwind CSS for styling
+- Prisma + Postgres
+- Tested with Vitest (unit) and Playwright (e2e)
+
+## Conventions
+
+- Components live in `src/components/` and use named exports only
+- API routes live in `src/app/api/` — always validate input with Zod schemas in `src/schemas/`
+- No `any` types — if you need a placeholder, use `unknown` and narrow
+
+## Things to never do
+
+- Don't introduce new state libraries (we use Zustand only)
+- Don't use `useEffect` for data fetching — use Server Components or React Query
+- Don't bypass auth middleware — every API route must call `requireUser()`
+
+## Testing
+
+Before declaring a task done, run:
+
+```
+pnpm typecheck
+pnpm test
+```
+
+If the change touches checkout, also run `pnpm e2e:checkout`.
+</code></pre>
+
+    <p>
+      You can also see this repo's own
+      <a href="../CLAUDE.md">CLAUDE.md</a> for a real working example.
+    </p>
+
+    <div class="callout tip">
+      <strong>What makes this good</strong>
+      <ul>
+        <li>Top line tells the AI what the project <em>is</em> in one sentence — orienting it instantly.</li>
+        <li>Stack section is short and concrete — versions, languages, key libraries.</li>
+        <li>Conventions are <em>specific</em> ("named exports only", not "follow good practices").</li>
+        <li>"Things to never do" prevents common drift back to defaults the AI would otherwise pick.</li>
+        <li>Testing block gives a reproducible done-check, not vague "make sure it works."</li>
+        <li>No filler. No "be helpful." No restating what the code already shows.</li>
+      </ul>
+    </div>
+
+    <div class="callout warning">
+      <strong>Watch out for</strong>
+      <ul class="watch-list">
+        <li><strong>Bloat costs tokens.</strong> Every line is sent on every message. Keep it focused — if you've never had to remind the AI of something, don't write it down.</li>
+        <li><strong>Don't put fast-changing context in.</strong> Today's task state, current branch, current sprint goal — those belong in a Prompt, not here.</li>
+        <li><strong>Don't restate what the code shows.</strong> If <code>tsconfig.json</code> already says strict mode is on, you don't need a line saying so.</li>
+        <li><strong>Write it for the AI, not for humans.</strong> No "welcome to the project" tone. Direct, imperative, terse.</li>
+        <li><strong>Update it when conventions change.</strong> A stale CLAUDE.md silently pushes the AI toward outdated patterns.</li>
+      </ul>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Pandora's AI Box &mdash; personal notes, not public docs.
+</footer>
+
+</body>
+</html>

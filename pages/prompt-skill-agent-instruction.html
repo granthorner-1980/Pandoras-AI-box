@@ -26,9 +26,15 @@
       position: relative;
       overflow: hidden;
       transition: transform 0.15s, border-color 0.15s;
+      display: block;
+      color: var(--text);
+      text-decoration: none;
     }
 
-    .concept-card:hover { transform: translateY(-3px); }
+    .concept-card:hover {
+      transform: translateY(-3px);
+      text-decoration: none;
+    }
     .concept-card.instruction:hover { border-color: #6366f1; }
     .concept-card.prompt:hover      { border-color: #a855f7; }
     .concept-card.skill:hover       { border-color: #14b8a6; }
@@ -128,6 +134,26 @@
       font-size: 1rem;
       opacity: 0.4;
     }
+
+    .concept-cta {
+      margin-top: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.15s;
+    }
+
+    .concept-card:hover .concept-cta { gap: 0.7rem; }
+
+    .concept-card.instruction .concept-cta { color: #6366f1; }
+    .concept-card.prompt .concept-cta      { color: #a855f7; }
+    .concept-card.skill .concept-cta       { color: #14b8a6; }
+    .concept-card.agent .concept-cta       { color: #f97316; }
 
     /* ── Decision flowchart ── */
 
@@ -326,7 +352,7 @@
 
     <div class="concept-grid">
 
-      <div class="concept-card instruction">
+      <a class="concept-card instruction" href="example-instruction.html">
         <span class="concept-emoji">📋</span>
         <div class="concept-name">Instruction</div>
         <div class="concept-alias">CLAUDE.md · system prompt</div>
@@ -339,9 +365,10 @@
           <div class="trigger-item">Every project has its own conventions and the AI keeps missing them.</div>
           <div class="trigger-item">There's a fact about my setup or preferences that should never be forgotten.</div>
         </div>
-      </div>
+        <div class="concept-cta">See example <span>→</span></div>
+      </a>
 
-      <div class="concept-card prompt">
+      <a class="concept-card prompt" href="example-prompt.html">
         <span class="concept-emoji">💬</span>
         <div class="concept-name">Prompt</div>
         <div class="concept-alias">one-off · you write it fresh</div>
@@ -354,9 +381,10 @@
           <div class="trigger-item">This task is unique to today — I won't need it again.</div>
           <div class="trigger-item">I'm exploring an idea and want full control over the wording.</div>
         </div>
-      </div>
+        <div class="concept-cta">See example <span>→</span></div>
+      </a>
 
-      <div class="concept-card skill">
+      <a class="concept-card skill" href="example-skill.html">
         <span class="concept-emoji">⚡</span>
         <div class="concept-name">Skill</div>
         <div class="concept-alias">/slash command · repeatable shortcut</div>
@@ -369,9 +397,10 @@
           <div class="trigger-item">Every time I open a PR, I run the same checklist.</div>
           <div class="trigger-item">I want this to be one keystroke instead of a paragraph.</div>
         </div>
-      </div>
+        <div class="concept-cta">See example <span>→</span></div>
+      </a>
 
-      <div class="concept-card agent">
+      <a class="concept-card agent" href="example-agent.html">
         <span class="concept-emoji">🤖</span>
         <div class="concept-name">Agent</div>
         <div class="concept-alias">multi-step · tools · autonomous</div>
@@ -384,7 +413,8 @@
           <div class="trigger-item">It should search the codebase, decide what to fix, then fix it.</div>
           <div class="trigger-item">I want to hand off a goal and walk away.</div>
         </div>
-      </div>
+        <div class="concept-cta">See example <span>→</span></div>
+      </a>
 
     </div>
 

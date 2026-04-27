@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent · Example — Pandora's AI Box</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .type-tag-agent {
+      background: #2a1500;
+      color: #f97316;
+      border-color: #f97316;
+    }
+    .example-emoji {
+      font-size: 2rem;
+      margin-right: 0.5rem;
+      vertical-align: -0.15em;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Pandora's <span>AI</span> Box</h1>
+  <nav>
+    <a href="../index.html#learned">Learned</a>
+    <a href="../index.html#to-learn">To Learn</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <a class="back" href="prompt-skill-agent-instruction.html">← Back to the four paths</a>
+    <h1><span class="example-emoji">🤖</span>Agent · Example</h1>
+    <p class="subtitle">A specialised sub-agent with its own model, tools, and system prompt.</p>
+    <div class="meta">
+      <span class="tag type-tag-agent">Agent</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <h2>What it is</h2>
+    <p>
+      A focused sub-agent with its own system prompt, model, and tool access.
+      The main Claude delegates work to it when the task description matches.
+      You give it a goal — it figures out the steps, runs the tools, and returns a result.
+    </p>
+
+    <h2>Where it lives</h2>
+    <ul>
+      <li>Project: <code>.claude/agents/&lt;name&gt;.md</code></li>
+      <li>Global: <code>~/.claude/agents/&lt;name&gt;.md</code></li>
+    </ul>
+
+    <h2>Example</h2>
+    <p>A <code>code-explorer</code> agent — fast, cheap, read-only codebase navigator:</p>
+
+<pre><code>---
+name: code-explorer
+description: Quickly locate and explain a feature in the codebase. Use for "where is X defined?" or "how does Y work?" questions. Read-only — does not modify files.
+model: haiku
+tools: Read, Grep, Glob, Bash
+---
+
+You are a read-only code exploration agent. Given a feature, function,
+or symbol name, find it in the codebase and explain how it works.
+
+Process:
+1. Use Grep to find references — start broad, narrow down
+2. Use Read to inspect the key files
+3. Trace the flow end-to-end (caller → callee, data in → data out)
+4. Return a concise explanation with `file:line` citations
+
+Constraints:
+- Do not modify any files (no Edit, no Write — your toolset reflects this)
+- Do not run destructive shell commands
+- Keep the response under 300 words
+- If the feature spans many files, show the entry point and the
+  2-3 most important hops, not exhaustive coverage
+
+Output format:
+**Summary:** one-line description
+**Entry point:** file:line
+**Key files:**
+- file:line — what it does
+- file:line — what it does
+**Notes:** any gotchas worth knowing
+</code></pre>
+
+    <div class="callout tip">
+      <strong>What makes this good</strong>
+      <ul>
+        <li><strong>Specific <code>description</code>.</strong> The main agent reads this to decide when to delegate. "Use for 'where is X' questions" is a clear trigger; "explores code" is not.</li>
+        <li><strong>Cheap model.</strong> <code>model: haiku</code> — read-only navigation doesn't need Opus. Cost-conscious by design.</li>
+        <li><strong>Restricted toolset.</strong> No <code>Edit</code> or <code>Write</code> means it physically can't modify files, even if the prompt slipped.</li>
+        <li><strong>Concrete process.</strong> A 4-step recipe gives the agent a clear path to follow.</li>
+        <li><strong>Hard constraints.</strong> Word limit, no destructive commands, no exhaustive coverage — keeps it focused.</li>
+        <li><strong>Structured output.</strong> Predictable shape so the main agent can consume the result reliably.</li>
+      </ul>
+    </div>
+
+    <div class="callout warning">
+      <strong>Watch out for</strong>
+      <ul class="watch-list">
+        <li><strong>Don't grant more tools than needed.</strong> Fewer tools = safer + cheaper + faster. An exploration agent doesn't need <code>Edit</code>.</li>
+        <li><strong>The description controls delegation.</strong> If it's vague, the main agent won't know when to use this — and you'll never see it triggered.</li>
+        <li><strong>Agents amplify mistakes.</strong> A vague goal becomes a confidently wrong multi-step workflow. Be specific about success criteria.</li>
+        <li><strong>Long-running agents can loop or hallucinate paths.</strong> Set output limits and step limits.</li>
+        <li><strong>Read-only by default.</strong> If you can achieve the task without write access, omit Edit/Write tools entirely.</li>
+        <li><strong>Don't reach for an agent when a prompt would do.</strong> Agents are slower and harder to predict — only escalate when the task genuinely needs autonomy.</li>
+      </ul>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Pandora's AI Box &mdash; personal notes, not public docs.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill · Example — Pandora's AI Box</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .type-tag-skill {
+      background: #0a2420;
+      color: #14b8a6;
+      border-color: #14b8a6;
+    }
+    .example-emoji {
+      font-size: 2rem;
+      margin-right: 0.5rem;
+      vertical-align: -0.15em;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Pandora's <span>AI</span> Box</h1>
+  <nav>
+    <a href="../index.html#learned">Learned</a>
+    <a href="../index.html#to-learn">To Learn</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <a class="back" href="prompt-skill-agent-instruction.html">← Back to the four paths</a>
+    <h1><span class="example-emoji">⚡</span>Skill · Example</h1>
+    <p class="subtitle">A repeatable prompt, saved as a slash command.</p>
+    <div class="meta">
+      <span class="tag type-tag-skill">Skill</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <h2>What it is</h2>
+    <p>
+      A prompt you've written once, saved to disk, and now trigger with a slash command
+      like <code>/review-pr</code>. You still kick it off manually, but the instructions
+      are pre-written and consistent every time.
+    </p>
+
+    <h2>Where it lives</h2>
+    <ul>
+      <li>Project: <code>.claude/skills/&lt;name&gt;.md</code></li>
+      <li>Global: <code>~/.claude/skills/&lt;name&gt;.md</code></li>
+    </ul>
+
+    <h2>Example</h2>
+    <p>A <code>/review-pr</code> skill — the file you'd put at <code>.claude/skills/review-pr.md</code>:</p>
+
+<pre><code>---
+name: review-pr
+description: Review the current branch's changes against main for security and correctness issues
+---
+
+Review the current branch's changes against main:
+
+1. Run `git diff main...HEAD` to see what changed
+2. For each modified file, identify:
+   - Security concerns (auth, SQL, secrets, input validation)
+   - Correctness bugs (off-by-one, null handling, race conditions)
+   - Test coverage gaps for the new logic
+
+Output:
+- Group findings by file
+- For each finding include: `file:line`, severity (high / medium / low),
+  and a one-line explanation
+- If nothing concerning, say "No issues found." — don't invent feedback
+
+Skip: code style, formatting, naming conventions.
+</code></pre>
+
+    <div class="callout tip">
+      <strong>What makes this good</strong>
+      <ul>
+        <li><strong>Frontmatter <code>name</code> and <code>description</code>.</strong> The description is what shows up in <code>/help</code> — make it specific so future-you remembers what it does.</li>
+        <li><strong>Concrete first step.</strong> "Run <code>git diff main...HEAD</code>" gives the AI a clear starting action.</li>
+        <li><strong>Defined output structure.</strong> Same shape every time, so you can scan results quickly.</li>
+        <li><strong>Explicit "skip" list.</strong> Prevents scope creep into things you don't want.</li>
+        <li><strong>Exit clause.</strong> "No issues found" prevents the AI from inventing feedback to seem useful.</li>
+        <li><strong>Short.</strong> A skill that fits on one screen is one you'll actually maintain.</li>
+      </ul>
+    </div>
+
+    <div class="callout warning">
+      <strong>Watch out for</strong>
+      <ul class="watch-list">
+        <li><strong>Skills can rot.</strong> If your workflow changes (new lint tool, new branch convention) but the skill doesn't, you'll silently get stale results. Treat them like code — review them.</li>
+        <li><strong>The description triggers it.</strong> Vague descriptions ("Reviews things") mean you won't remember when to use it. Be specific.</li>
+        <li><strong>Skills are saved prompts — same pitfalls apply.</strong> Vague instructions in the body produce vague output, every single time.</li>
+        <li><strong>Don't proliferate.</strong> 50 skills you can't remember is worse than 5 you use weekly. Delete unused ones.</li>
+        <li><strong>One skill, one job.</strong> Don't combine unrelated tasks into a mega-skill — split them.</li>
+      </ul>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Pandora's AI Box &mdash; personal notes, not public docs.
+</footer>
+
+</body>
+</html>
