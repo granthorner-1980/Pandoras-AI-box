@@ -48,10 +48,19 @@
     </p>
 
     <h2>Where it lives</h2>
+
+    <h3>Claude Code</h3>
     <ul>
       <li>Project-wide: <code>CLAUDE.md</code> at the repo root</li>
       <li>Global (all projects): <code>~/.claude/CLAUDE.md</code></li>
       <li>API: passed as <code>system</code> on each request</li>
+    </ul>
+
+    <h3>GitHub Copilot</h3>
+    <ul>
+      <li>Project-wide: <code>.github/copilot-instructions.md</code> at the repo root</li>
+      <li>Path-specific: <code>*.instructions.md</code> files with YAML frontmatter (e.g. apply only to <code>src/api/**</code>)</li>
+      <li>VS Code settings: <code>github.copilot.chat.codeGeneration.instructions</code> (and similar) in <code>settings.json</code></li>
     </ul>
 
     <h2>Example</h2>

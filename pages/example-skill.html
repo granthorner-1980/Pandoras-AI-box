@@ -48,13 +48,32 @@
     </p>
 
     <h2>Where it lives</h2>
+
+    <p>
+      Both ecosystems use the same convention: a folder per skill, containing a required
+      <code>SKILL.md</code> file (uppercase). The folder can also hold optional scripts,
+      references, or templates that the skill loads when invoked.
+    </p>
+
+    <h3>Claude Code</h3>
     <ul>
-      <li>Project: <code>.claude/skills/&lt;name&gt;.md</code></li>
-      <li>Global: <code>~/.claude/skills/&lt;name&gt;.md</code></li>
+      <li>Project: <code>.claude/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+      <li>Global: <code>~/.claude/skills/&lt;skill-name&gt;/SKILL.md</code></li>
     </ul>
 
+    <h3>GitHub Copilot</h3>
+    <ul>
+      <li>Project: <code>.github/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+      <li>User profile: <code>~/.copilot/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+    </ul>
+
+    <p>
+      In Copilot, the AI decides when to use a skill based on the description in the SKILL.md frontmatter.
+      In Claude Code, skills can also be triggered manually with <code>/&lt;name&gt;</code>.
+    </p>
+
     <h2>Example</h2>
-    <p>A <code>/review-pr</code> skill — the file you'd put at <code>.claude/skills/review-pr.md</code>:</p>
+    <p>A <code>review-pr</code> skill — the file you'd put at <code>.claude/skills/review-pr/SKILL.md</code> (or <code>.github/skills/review-pr/SKILL.md</code> for Copilot):</p>
 
 <pre><code>---
 name: review-pr
