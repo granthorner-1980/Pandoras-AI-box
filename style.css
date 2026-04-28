@@ -333,3 +333,89 @@ footer {
   color: var(--text);
   font-weight: 700;
 }
+
+/* ── Mobile ── */
+
+@media (max-width: 700px) {
+  body { font-size: 15px; }
+
+  header {
+    padding: 1.1rem 1rem 0.9rem;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  header h1 { font-size: 1.25rem; }
+
+  header nav {
+    margin-left: 0;
+    width: 100%;
+    gap: 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  main { padding: 1.5rem 1rem 2rem; }
+
+  footer {
+    padding: 1rem;
+    font-size: 0.75rem;
+  }
+
+  /* Index page */
+
+  .hero { margin-bottom: 2rem; }
+  .hero p { font-size: 0.95rem; }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .card { padding: 1rem 1.1rem; }
+
+  /* Note pages */
+
+  .page-header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.55rem;
+    line-height: 1.25;
+  }
+
+  .page-header .subtitle { font-size: 0.95rem; }
+
+  .content h2 {
+    font-size: 1.15rem;
+    margin: 1.75rem 0 0.6rem;
+  }
+
+  .content h3 {
+    font-size: 1rem;
+    margin: 1.25rem 0 0.4rem;
+  }
+
+  .content p { line-height: 1.65; }
+  .content ul, .content ol { padding-left: 1.25rem; }
+
+  .content pre {
+    padding: 0.85rem 1rem;
+    border-radius: 6px;
+  }
+
+  .content pre code { font-size: 0.78rem; }
+
+  .callout {
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    margin: 1.25rem 0;
+  }
+
+  .watch-list li { font-size: 0.85rem; }
+
+  /* Avoid hover transforms on touch */
+  .card:hover { transform: none; }
+}

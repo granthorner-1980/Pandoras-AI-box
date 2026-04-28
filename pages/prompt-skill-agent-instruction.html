@@ -298,20 +298,51 @@
     .type-pill.skill       { background: #0a2420; color: #14b8a6; }
     .type-pill.agent       { background: #2a1500; color: #f97316; }
 
+    /* ── Reference table scroll wrapper (mobile-friendly) ── */
+
+    .ref-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .ref-table { margin: 0; }
+
     /* ── Responsive ── */
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       .concept-grid {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
       }
 
-      .flow-step {
-        grid-template-columns: 1fr;
+      .concept-card { padding: 1.1rem 1.2rem; }
+      .concept-emoji { font-size: 1.85rem; }
+      .concept-name { font-size: 1.05rem; }
+
+      .flow-step { grid-template-columns: 1fr; }
+
+      .flow-question {
+        font-size: 0.85rem;
+        padding: 0.85rem 1rem;
       }
 
       .flow-yes-branch {
         padding-left: 1.25rem;
-        margin-top: -0.25rem;
+        margin-top: -0.1rem;
+      }
+
+      .flow-result {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.75rem;
+      }
+
+      /* Keep table laid out horizontally; scroll if too wide */
+      .ref-table { min-width: 560px; }
+
+      .ref-table th,
+      .ref-table td {
+        padding: 0.55rem 0.75rem;
       }
     }
   </style>
@@ -498,47 +529,49 @@
 
     <h2>Quick reference</h2>
 
-    <table class="ref-table">
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>You trigger it?</th>
-          <th>Repeatable?</th>
-          <th>Uses tools?</th>
-          <th>Lives where?</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="type-pill instruction">📋 Instruction</span></td>
-          <td>No — always-on</td>
-          <td>Yes, silently</td>
-          <td>No</td>
-          <td>CLAUDE.md / system prompt</td>
-        </tr>
-        <tr>
-          <td><span class="type-pill prompt">💬 Prompt</span></td>
-          <td>Yes, each time</td>
-          <td>No — varies</td>
-          <td>No</td>
-          <td>The chat window</td>
-        </tr>
-        <tr>
-          <td><span class="type-pill skill">⚡ Skill</span></td>
-          <td>Yes, via /command</td>
-          <td>Yes, consistently</td>
-          <td>Sometimes</td>
-          <td>.claude/skills/</td>
-        </tr>
-        <tr>
-          <td><span class="type-pill agent">🤖 Agent</span></td>
-          <td>Yes — then it runs</td>
-          <td>Yes</td>
-          <td>Yes — that's the point</td>
-          <td>SDK / Claude Code</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="ref-table-wrap">
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>You trigger it?</th>
+            <th>Repeatable?</th>
+            <th>Uses tools?</th>
+            <th>Lives where?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="type-pill instruction">📋 Instruction</span></td>
+            <td>No — always-on</td>
+            <td>Yes, silently</td>
+            <td>No</td>
+            <td>CLAUDE.md / system prompt</td>
+          </tr>
+          <tr>
+            <td><span class="type-pill prompt">💬 Prompt</span></td>
+            <td>Yes, each time</td>
+            <td>No — varies</td>
+            <td>No</td>
+            <td>The chat window</td>
+          </tr>
+          <tr>
+            <td><span class="type-pill skill">⚡ Skill</span></td>
+            <td>Yes, via /command</td>
+            <td>Yes, consistently</td>
+            <td>Sometimes</td>
+            <td>.claude/skills/</td>
+          </tr>
+          <tr>
+            <td><span class="type-pill agent">🤖 Agent</span></td>
+            <td>Yes — then it runs</td>
+            <td>Yes</td>
+            <td>Yes — that's the point</td>
+            <td>SDK / Claude Code</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="callout warning">
       <strong>Watch out for</strong>
