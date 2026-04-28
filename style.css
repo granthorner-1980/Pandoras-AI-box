@@ -286,7 +286,7 @@ footer {
 .callout.tip { border-color: var(--learned); }
 .callout.warning { border-color: var(--to-learn); }
 
-.callout strong {
+.callout > strong:first-child {
   display: block;
   margin-bottom: 0.3rem;
   font-size: 0.75rem;
